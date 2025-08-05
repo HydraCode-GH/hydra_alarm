@@ -1,5 +1,7 @@
 Config = {}
 
+Config.Debug = true
+
 Config.Update = true
 
 Config.VehicleBlacklist = {

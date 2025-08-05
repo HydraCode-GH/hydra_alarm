@@ -2,6 +2,12 @@
 Config = Config or {}
 local alarmVehicles = {}
 
+local function debugPrint(msg)
+    if Config.Debug then
+        print(msg)
+    end
+end
+
 -- Blacklist aus Config
 local vehicleBlacklist = Config.VehicleBlacklist or {}
 
@@ -39,7 +45,7 @@ CreateThread(function()
 
         local ped = PlayerPedId()
         if IsPedInAnyVehicle(ped, false) then
-            -- Spieler im Fahrzeug -> skip
+            debugPrint('Player is in a vehicle, skipping alarm check.')
         else
             for veh in EnumerateVehicles() do
                 if not isBlacklistedVehicle(veh) and isVehicleLocked(veh) then
