@@ -1,3 +1,4 @@
-RegisterNetEvent('hydra_alarm:triggerAlarm', function(vehNetId)
-    TriggerClientEvent('hydra_alarm:playAlarm', -1, vehNetId)
+RegisterNetEvent('hydraalarm:triggerAlarm', function(vehNetId)
+    local src = source
+    TriggerClientEvent('hydraalarm:playAlarm', -1, vehNetId)
 end)

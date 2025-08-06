@@ -17,8 +17,10 @@ server_scripts {
     'server/update.lua'
 }
 
-dependency 'ox_lib'
+dependencies{
+    'ox_lib',
+    'interact-sound'
+}
 
-export 'TriggerAlarm'
-
-server_export 'TriggerAlarmServer'
+export 'isAlarmActive'
+export 'hydra_alarm'

@@ -2,19 +2,44 @@ Config = {}
 
 Config.Update = true
 
--- Blacklist für Fahrzeuge, die KEINE Alarmanlage haben (Modellnamen)
-Config.BlacklistedVehicles = { -- z.B. Fahrräder, Boote, Müllwagen etc.
-    [`bmx`] = true,
-    [`faggio`] = true,
-    [`police`] = true,
-    [`ambulance`] = true,
-    [`bus`] = true,
-    -- usw.
+-- List of vehicles that will NEVER trigger the alarm
+Config.BlacklistedVehicles = {
+    [GetHashKey('bmx')] = true,         -- BMX bike
+    [GetHashKey('faggio')] = true,      -- Faggio scooter
+    [GetHashKey('police')] = true,      -- Police car
+    [GetHashKey('ambulance')] = true,   -- Ambulance
+    [GetHashKey('bus')] = true,         -- Bus
+    -- Add more models here if needed
 }
 
--- Alle Fahrzeuge außer Blacklist haben eine Alarmanlage!
+-- List of tow trucks that can trigger the tow alarm
+Config.TowTrucks = {
+    [GetHashKey('flatbed')] = true,
+    [GetHashKey('towtruck')] = true,
+    [GetHashKey('towtruck2')] = true,
+    -- Add more towtruck models if needed
+}
+
+-- Name of the alarm sound (OGG file name, without .ogg extension, placed in InteractSound)
+Config.InteractSoundName = 'alarm'
+
+-- Maximum distance (in GTA units/meters) at which players can hear the alarm sound
+Config.InteractSoundDistance = 25.0
+
+-- Volume of the alarm sound (1.0 = 100%)
+Config.InteractSoundVolume = 1.0
+
+-- Length of your alarm sound file (in seconds!)
+Config.InteractSoundLength = 13
+
+-- How many seconds before the sound ends should the next loop start (overlap)
+Config.InteractSoundLoopOffset = 1
+
+-- Duration of the alarm (in seconds) for lights, horn, and sound
 Config.AlarmDuration = 20
+
+-- Time in seconds before the same vehicle can trigger the alarm again (cooldown)
 Config.AlarmCooldown = 60
 
-Config.AlarmSound = 'car_alarm'
-Config.AlarmSoundRef = 'car_alarm_siren'
+-- Radius (in meters) to detect a towtruck near a vehicle (for tow-alarm fallback)
+Config.TowtruckDetectionRadius = 4.0
