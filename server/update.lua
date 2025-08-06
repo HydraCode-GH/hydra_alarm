@@ -1,3 +1,3 @@
 if Config.Update then
-    lib.versionCheck('HydraCode/hc_alarm')
+    lib.versionCheck('HydraCode/hydra_alarm')
 end

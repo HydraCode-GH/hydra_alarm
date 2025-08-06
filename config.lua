@@ -1,22 +1,20 @@
 Config = {}
 
-Config.Debug = true
-
 Config.Update = true
 
-Config.VehicleBlacklist = {
-    "POLICE",
-    "POLICE2",
-    "POLICE3",
-    "POLICE4",
-    "FIRETRUK",
-    "AMBULANCE",
-    "RHINO",
-    "BMX",
-    "CRUISER",
-    "SCORCHER",
-    "TRUCK",
-    "BUS"
+-- Blacklist für Fahrzeuge, die KEINE Alarmanlage haben (Modellnamen)
+Config.BlacklistedVehicles = { -- z.B. Fahrräder, Boote, Müllwagen etc.
+    [`bmx`] = true,
+    [`faggio`] = true,
+    [`police`] = true,
+    [`ambulance`] = true,
+    [`bus`] = true,
+    -- usw.
 }
 
-Config.AlarmDuration = 3000
+-- Alle Fahrzeuge außer Blacklist haben eine Alarmanlage!
+Config.AlarmDuration = 20
+Config.AlarmCooldown = 60
+
+Config.AlarmSound = 'car_alarm'
+Config.AlarmSoundRef = 'car_alarm_siren'

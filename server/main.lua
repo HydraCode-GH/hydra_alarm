@@ -1,3 +1,3 @@
-RegisterNetEvent('carAlarm:serverTrigger', function(vehNetId)
-    TriggerClientEvent('carAlarm:triggerAlarm', -1, vehNetId)
+RegisterNetEvent('hydra_alarm:triggerAlarm', function(vehNetId)
+    TriggerClientEvent('hydra_alarm:playAlarm', -1, vehNetId)
 end)
