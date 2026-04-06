@@ -28,6 +28,3 @@ files {
     'html/index.html',
     'html/**/*'
 }
-
-export 'isAlarmActive'
-export 'hydra_alarm'
