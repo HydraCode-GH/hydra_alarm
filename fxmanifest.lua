@@ -1,25 +1,32 @@
 fx_version 'cerulean'
 game 'gta5'
-lua54 'yes'
 
 author 'HydraCode'
-version '1.0.0 '
+version '1.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua',
-    'config.lua'
+    'config.lua',
+    'shared/**/*'
 }
 
-client_script 'client/main.lua'
+client_scripts {
+    'client/**/*'
+}
 
 server_scripts {
-    'server/main.lua',
-    'server/update.lua'
+    'server/**/*'
 }
 
 dependencies{
     'ox_lib',
-    'interact-sound'
+}
+
+ui_page 'html/index.html'
+
+files {
+    'html/index.html',
+    'html/**/*'
 }
 
 export 'isAlarmActive'

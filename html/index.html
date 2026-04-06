@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydra Alarm Audio</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.volume = 1;
+        const state = {
+            plate: null,
+            baseVolume: 1,
+            maxDistance: 25,
+            sourceType: 'audio',
+        };
+
+        let youtubePlayer = null;
+        let youtubeApiPromise = null;
+        const YOUTUBE_CONTAINER_ID = 'hydra-youtube-player';
+
+        function clampVolume(value) {
+            const numeric = Number(value);
+            if (Number.isNaN(numeric)) return 1;
+            return Math.min(1, Math.max(0, numeric));
+        }
+
+        function isRemoteSource(value) {
+            return /^https?:\/\//i.test(value || '');
+        }
+
+        function isYouTubeUrl(value) {
+            if (!isRemoteSource(value)) return false;
+            return /(?:youtube\.com|youtu\.be)/i.test(value || '');
+        }
+
+        function extractYouTubeVideoId(value) {
+            if (!isYouTubeUrl(value)) return null;
+
+            try {
+                const parsed = new URL(value);
+                const host = parsed.hostname.toLowerCase();
+                const parts = parsed.pathname.split('/').filter(Boolean);
+
+                if (host.includes('youtu.be')) {
+                    return parts[0] || null;
+                }
+
+                if (parts[0] === 'watch') {
+                    return parsed.searchParams.get('v');
+                }
+
+                if (parts[0] === 'shorts' && parts[1]) {
+                    return parts[1];
+                }
+
+                if (parts[0] === 'embed' && parts[1]) {
+                    return parts[1];
+                }
+
+                return parsed.searchParams.get('v');
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function isFileSource(value) {
+            return /\.(mp3|ogg|wav|m4a)(\?.*)?$/i.test(value || '');
+        }
+
+        function normalizeSource(payload) {
+            if (payload.soundSource) return payload.soundSource;
+            if (payload.soundMode === 'url' && payload.soundUrl) return payload.soundUrl;
+            if (payload.soundMode === 'file' && payload.soundFile) return payload.soundFile;
+            if (payload.soundUrl) return payload.soundUrl;
+            if (payload.soundFile) return payload.soundFile;
+            if (isRemoteSource(payload.soundName) || isFileSource(payload.soundName)) return payload.soundName;
+            return '';
+        }
+
+        function toResourceUrl(source) {
+            if (!source) return '';
+            if (isRemoteSource(source)) return source;
+            return new URL(source.replace(/^\.\//, ''), window.location.href).href;
+        }
+
+        function ensureYouTubeContainer() {
+            let container = document.getElementById(YOUTUBE_CONTAINER_ID);
+            if (container) return container;
+
+            container = document.createElement('div');
+            container.id = YOUTUBE_CONTAINER_ID;
+            container.style.width = '1px';
+            container.style.height = '1px';
+            container.style.position = 'fixed';
+            container.style.left = '-9999px';
+            container.style.top = '-9999px';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        function ensureYouTubeApi() {
+            if (window.YT && window.YT.Player) {
+                return Promise.resolve();
+            }
+
+            if (youtubeApiPromise) {
+                return youtubeApiPromise;
+            }
+
+            youtubeApiPromise = new Promise((resolve) => {
+                const priorReady = window.onYouTubeIframeAPIReady;
+
+                window.onYouTubeIframeAPIReady = () => {
+                    if (typeof priorReady === 'function') {
+                        priorReady();
+                    }
+                    resolve();
+                };
+
+                const script = document.createElement('script');
+                script.src = 'https://www.youtube.com/iframe_api';
+                script.async = true;
+                document.head.appendChild(script);
+            });
+
+            return youtubeApiPromise;
+        }
+
+        function stopYouTube() {
+            if (!youtubePlayer || typeof youtubePlayer.stopVideo !== 'function') {
+                return;
+            }
+
+            try {
+                youtubePlayer.stopVideo();
+            } catch (_) {
+                // Silent failure by design.
+            }
+        }
+
+        function setOutputVolume(volume) {
+            const clamped = clampVolume(volume);
+
+            if (state.sourceType === 'youtube' && youtubePlayer && typeof youtubePlayer.setVolume === 'function') {
+                youtubePlayer.setVolume(Math.round(clamped * 100));
+                return;
+            }
+
+            audio.volume = clamped;
+        }
+
+        async function playYouTube(videoId, volume) {
+            ensureYouTubeContainer();
+            await ensureYouTubeApi();
+
+            const normalizedVolume = clampVolume(volume);
+
+            if (!youtubePlayer) {
+                youtubePlayer = new window.YT.Player(YOUTUBE_CONTAINER_ID, {
+                    width: '1',
+                    height: '1',
+                    videoId,
+                    playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        disablekb: 1,
+                        fs: 0,
+                        iv_load_policy: 3,
+                        loop: 1,
+                        modestbranding: 1,
+                        playsinline: 1,
+                        rel: 0,
+                        playlist: videoId,
+                    },
+                    events: {
+                        onReady: (event) => {
+                            event.target.setVolume(Math.round(normalizedVolume * 100));
+                            event.target.playVideo();
+                        },
+                        onStateChange: (event) => {
+                            if (event.data === window.YT.PlayerState.ENDED) {
+                                event.target.seekTo(0);
+                                event.target.playVideo();
+                            }
+                        },
+                    },
+                });
+
+                return;
+            }
+
+            youtubePlayer.loadVideoById(videoId);
+            youtubePlayer.setVolume(Math.round(normalizedVolume * 100));
+            youtubePlayer.playVideo();
+        }
+
+        function computeDistanceVolume(baseVolume, currentDistance, maxDistance) {
+            const safeBase = clampVolume(baseVolume);
+            const safeDistance = Math.max(0, Number(currentDistance) || 0);
+            const safeMax = Math.max(0.001, Number(maxDistance) || 25);
+            const attenuation = Math.max(0, 1 - (safeDistance / safeMax));
+            return clampVolume(safeBase * attenuation);
+        }
+
+        async function playAlarm(payload) {
+            const source = normalizeSource(payload);
+            const resolvedSource = toResourceUrl(source);
+            if (!resolvedSource) return;
+
+            state.plate = payload.plate || null;
+            state.baseVolume = clampVolume(payload.volume);
+            state.maxDistance = Math.max(0.001, Number(payload.maxDistance) || 25);
+
+            const youtubeVideoId = extractYouTubeVideoId(resolvedSource);
+            if (youtubeVideoId) {
+                state.sourceType = 'youtube';
+                audio.pause();
+                audio.currentTime = 0;
+
+                try {
+                    await playYouTube(youtubeVideoId, state.baseVolume);
+                } catch (_) {
+                    // Silent failure: no UI output by request.
+                }
+
+                return;
+            }
+
+            state.sourceType = 'audio';
+            stopYouTube();
+
+            audio.pause();
+            audio.src = resolvedSource;
+            audio.loop = !isRemoteSource(source);
+            setOutputVolume(state.baseVolume);
+            audio.currentTime = 0;
+
+            try {
+                await audio.play();
+            } catch (_) {
+                // Silent failure: no UI output by request.
+            }
+        }
+
+        function stopAlarm() {
+            audio.pause();
+            audio.currentTime = 0;
+            stopYouTube();
+            state.plate = null;
+        }
+
+        window.addEventListener('message', async (event) => {
+            const payload = event.data || {};
+
+            if (payload.type === 'play_alarm_sound') {
+                await playAlarm(payload);
+                return;
+            }
+
+            if (payload.type === 'update_alarm_distance') {
+                if (!state.plate || !payload.plate || payload.plate === state.plate) {
+                    const baseVolume = payload.baseVolume ?? state.baseVolume;
+                    const maxDistance = payload.maxDistance ?? state.maxDistance;
+                    setOutputVolume(computeDistanceVolume(baseVolume, payload.currentDistance, maxDistance));
+                }
+                return;
+            }
+
+            if (payload.type === 'stop_alarm_sound' || payload.type === 'alarm_stop') {
+                stopAlarm();
+            }
+        });
+    </script>
+</body>
+</html>
