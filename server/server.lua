@@ -1,17 +1,15 @@
 --[[
- _                     
- /$$                       /$$                                     /$$                                  
-| $$                      | $$                                    | $$                                  
-| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$ 
+ /$$                       /$$                                     /$$
+| $$                      | $$                                    | $$
+| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$
 | $$__  $$| $$  | $$ /$$__  $$ /$$__  $$|____  $$ /$$$$$$|____  $$| $$ |____  $$ /$$__  $$| $$_  $$_  $$
 | $$  \ $$| $$  | $$| $$  | $$| $$  \__/ /$$$$$$$|______/ /$$$$$$$| $$  /$$$$$$$| $$  \__/| $$ \ $$ \ $$
 | $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$        /$$__  $$| $$ /$$__  $$| $$      | $$ | $$ | $$
 | $$  | $$|  $$$$$$$|  $$$$$$$| $$     |  $$$$$$$       |  $$$$$$$| $$|  $$$$$$$| $$      | $$ | $$ | $$
 |__/  |__/ \____  $$ \_______/|__/      \_______/        \_______/|__/ \_______/|__/      |__/ |__/ |__/
-           /$$  | $$                                                                                    
-          |  $$$$$$/                                                                                    
-           \______/         
-Server events
+           /$$  | $$
+          |  $$$$$$/
+           \______/
 --]]
 
 HydraAlarmServerCache = HydraAlarmServerCache or {}
@@ -81,11 +79,10 @@ lib.callback.register('hydra_alarm:getNearbyAlarmStates', function(_, nearbyPlat
     return result
 end)
 
-RegisterNetEvent('hydra_alarm:serverSetAlarmState')
 ---@param plate string
 ---@param alarmActive boolean
 ---@param reason string
-AddEventHandler('hydra_alarm:serverSetAlarmState', function(plate, alarmActive, reason)
+RegisterNetEvent('hydra_alarm:serverSetAlarmState', function(plate, alarmActive, reason)
     local sourceId = source
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then
@@ -103,10 +100,9 @@ AddEventHandler('hydra_alarm:serverSetAlarmState', function(plate, alarmActive, 
     end
 end)
 
-RegisterNetEvent('hydra_alarm:triggerAlarm')
 ---@param plate string
 ---@param reason string
-AddEventHandler('hydra_alarm:triggerAlarm', function(plate, reason)
+RegisterNetEvent('hydra_alarm:triggerAlarm', function(plate, reason)
     local sourceId = source
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then
@@ -118,9 +114,8 @@ AddEventHandler('hydra_alarm:triggerAlarm', function(plate, reason)
     notifySource(sourceId, L('notify.alarm_triggered', normalizedPlate), 'warning', 3500)
 end)
 
-RegisterNetEvent('hydra_alarm:stopAlarm')
 ---@param plate string
-AddEventHandler('hydra_alarm:stopAlarm', function(plate)
+RegisterNetEvent('hydra_alarm:stopAlarm', function(plate)
     local sourceId = source
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then

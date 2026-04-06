@@ -1,21 +1,18 @@
 Editable = Editable or {}
 
 --[[
- _                     
- /$$                       /$$                                     /$$                                  
-| $$                      | $$                                    | $$                                  
-| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$ 
+ /$$                       /$$                                     /$$
+| $$                      | $$                                    | $$
+| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$
 | $$__  $$| $$  | $$ /$$__  $$ /$$__  $$|____  $$ /$$$$$$|____  $$| $$ |____  $$ /$$__  $$| $$_  $$_  $$
 | $$  \ $$| $$  | $$| $$  | $$| $$  \__/ /$$$$$$$|______/ /$$$$$$$| $$  /$$$$$$$| $$  \__/| $$ \ $$ \ $$
 | $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$        /$$__  $$| $$ /$$__  $$| $$      | $$ | $$ | $$
 | $$  | $$|  $$$$$$$|  $$$$$$$| $$     |  $$$$$$$       |  $$$$$$$| $$|  $$$$$$$| $$      | $$ | $$ | $$
 |__/  |__/ \____  $$ \_______/|__/      \_______/        \_______/|__/ \_______/|__/      |__/ |__/ |__/
-           /$$  | $$                                                                                    
-          |  $$$$$$/                                                                                    
-           \______/         
-Editable, Everything here is easy to edit and replace. This file is meant to be a bridge for server/client communication and notifications, but you can expand it as needed for your own use.
+           /$$  | $$
+          |  $$$$$$/
+           \______/
 --]]
-
 
 if IsDuplicityVersion() then
     Editable.Server = Editable.Server or {}
@@ -29,6 +26,11 @@ if IsDuplicityVersion() then
     function Editable.Server.Notify(playerId, message, notifyType, duration)
         notifyType = notifyType or 'info'
         duration = duration or 5000
+
+        if GetResourceState('okokNotify') ~= 'missing' then
+            TriggerClientEvent('okokNotify:Alert', playerId, 'Alarm', message, duration, notifyType, false)
+            return
+        end
 
         if Framework and Framework.Type == 'esx' then
             --print('ESX notify: ' .. message) --- IGNORE ---
@@ -55,6 +57,11 @@ else
     function Editable.Client.Notify(message, notifyType, duration)
         notifyType = notifyType or 'info'
         duration = duration or 5000
+
+        if GetResourceState('okokNotify') ~= 'missing' then
+            exports['okokNotify']:Alert('Alarm', message, duration, notifyType, false)
+            return
+        end
 
         if Framework and Framework.Type == 'esx' then
             TriggerEvent('esx:showNotification', message)

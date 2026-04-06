@@ -1,12 +1,17 @@
 # hydra_alarm
 
 ```text
- _               _                    _
-| |__  _   _  __| |_ __ __ _    __ _| | __ _ _ __ _ __ ___
-| '_ \| | | |/ _` | '__/ _` |  / _` | |/ _` | '__| '_ ` _ \
-| | | | |_| | (_| | | | (_| | | (_| | | (_| | |  | | | | | |
-|_| |_|\__, |\__,_|_|  \__,_|  \__,_|_|\__,_|_|  |_| |_| |_|
-       |___/
+ /$$                       /$$                                     /$$
+| $$                      | $$                                    | $$
+| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$
+| $$__  $$| $$  | $$ /$$__  $$ /$$__  $$|____  $$ /$$$$$$|____  $$| $$ |____  $$ /$$__  $$| $$_  $$_  $$
+| $$  \ $$| $$  | $$| $$  | $$| $$  \__/ /$$$$$$$|______/ /$$$$$$$| $$  /$$$$$$$| $$  \__/| $$ \ $$ \ $$
+| $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$        /$$__  $$| $$ /$$__  $$| $$      | $$ | $$ | $$
+| $$  | $$|  $$$$$$$|  $$$$$$$| $$     |  $$$$$$$       |  $$$$$$$| $$|  $$$$$$$| $$      | $$ | $$ | $$
+|__/  |__/ \____  $$ \_______/|__/      \_______/        \_______/|__/ \_______/|__/      |__/ |__/ |__/
+           /$$  | $$
+          |  $$$$$$/
+           \______/
 ```
 
 This is a vehicle alarm resource for FiveM. It watches nearby locked cars and triggers alarms for damage, jumping on top, and towing.
@@ -22,10 +27,14 @@ It runs with ESX, QBCore, or standalone mode and it keeps alarm state synced thr
 
 ## Quick setup
 
+1. [Get the newest release here](https://github.com/HydraCode-GH/hydra_alarm/releases/latest/download/hydra_alarm.zip)
 1. Put the resource in your server resources folder.
-2. Ensure dependencies are started.
-3. Configure [config.lua](config.lua).
-4. Add ensure in server config and restart the resource.
+2. Configure the [config.lua](config.lua).
+3. Add this in server.cfg and restart the server:
+
+```cfg
+start hydra_alarm
+```
 
 
 ## Notifications and edits

@@ -1,24 +1,23 @@
 Config = {}
 
 --[[
- _                     
- /$$                       /$$                                     /$$                                  
-| $$                      | $$                                    | $$                                  
-| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$ 
+ /$$                       /$$                                     /$$
+| $$                      | $$                                    | $$
+| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$
 | $$__  $$| $$  | $$ /$$__  $$ /$$__  $$|____  $$ /$$$$$$|____  $$| $$ |____  $$ /$$__  $$| $$_  $$_  $$
 | $$  \ $$| $$  | $$| $$  | $$| $$  \__/ /$$$$$$$|______/ /$$$$$$$| $$  /$$$$$$$| $$  \__/| $$ \ $$ \ $$
 | $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$        /$$__  $$| $$ /$$__  $$| $$      | $$ | $$ | $$
 | $$  | $$|  $$$$$$$|  $$$$$$$| $$     |  $$$$$$$       |  $$$$$$$| $$|  $$$$$$$| $$      | $$ | $$ | $$
 |__/  |__/ \____  $$ \_______/|__/      \_______/        \_______/|__/ \_______/|__/      |__/ |__/ |__/
-           /$$  | $$                                                                                    
-          |  $$$$$$/                                                                                    
-           \______/         
+           /$$  | $$
+          |  $$$$$$/
+           \______/
 Config lol
 --]]
 
 
 -- Enables debug prints in console.
-Config.Debug = true
+Config.Debug = false
 
 -- Active locale key (for example: 'en').
 Config.Locale = 'en'
@@ -109,7 +108,7 @@ Config.HornPattern = 'double'
 Config.NuiSoundMode = 'file'
 
 -- Remote source used when mode is 'url'.
-Config.NuiSoundUrl = 'https://www.youtube.com/watch?v=8yOskhDn468' 
+Config.NuiSoundUrl = 'https://youtu.be/iik25wqIuFo?list=RDiik25wqIuFo'
 
 -- Local source used when mode is 'file' (relative to html/).
 Config.NuiSoundFile = 'assets/alarm.mp3'

@@ -1,17 +1,15 @@
 --[[
- _                     
- /$$                       /$$                                     /$$                                  
-| $$                      | $$                                    | $$                                  
-| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$ 
+ /$$                       /$$                                     /$$
+| $$                      | $$                                    | $$
+| $$$$$$$  /$$   /$$  /$$$$$$$  /$$$$$$  /$$$$$$          /$$$$$$ | $$  /$$$$$$   /$$$$$$  /$$$$$$/$$$$
 | $$__  $$| $$  | $$ /$$__  $$ /$$__  $$|____  $$ /$$$$$$|____  $$| $$ |____  $$ /$$__  $$| $$_  $$_  $$
 | $$  \ $$| $$  | $$| $$  | $$| $$  \__/ /$$$$$$$|______/ /$$$$$$$| $$  /$$$$$$$| $$  \__/| $$ \ $$ \ $$
 | $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$        /$$__  $$| $$ /$$__  $$| $$      | $$ | $$ | $$
 | $$  | $$|  $$$$$$$|  $$$$$$$| $$     |  $$$$$$$       |  $$$$$$$| $$|  $$$$$$$| $$      | $$ | $$ | $$
 |__/  |__/ \____  $$ \_______/|__/      \_______/        \_______/|__/ \_______/|__/      |__/ |__/ |__/
-           /$$  | $$                                                                                    
-          |  $$$$$$/                                                                                    
-           \______/         
-Framework Bridge for ESX/QBCORE/QBOX/Standalone
+           /$$  | $$
+          |  $$$$$$/
+           \______/
 --]]
 
 Framework = {}
@@ -100,7 +98,7 @@ end
 if IsDuplicityVersion() then
     -- SERVER SIDE
     Framework.Server = {}
-    
+
     ---Detect and initialize server framework bridge.
     ---@return nil
     local function detectFramework()
@@ -115,7 +113,7 @@ if IsDuplicityVersion() then
             Framework.Type = 'esx'
             Framework.ESX = esxObject
         end
-        
+
         if Framework.Type ~= 'esx' then
             if (Config and Config.Framework == 'qbcore') or isResourceStarted('qb-core') then
                 local qbObject = getQbCoreObject()
@@ -125,7 +123,7 @@ if IsDuplicityVersion() then
                 end
             end
         end
-        
+
         if not Framework.Type then
             Framework.Type = 'standalone'
             debugprint('No framework detected, running in standalone mode')
@@ -133,9 +131,9 @@ if IsDuplicityVersion() then
             debugprint('Detected framework: ' .. Framework.Type)
         end
     end
-    
+
     detectFramework()
-    
+
     ---Server-side notification helper.
     ---@param player number
     ---@param title string
@@ -150,7 +148,7 @@ if IsDuplicityVersion() then
             return
         end
     end
-    
+
     ---Check if a player has admin permission.
     ---@param source number
     ---@return boolean
@@ -193,7 +191,7 @@ if IsDuplicityVersion() then
 else
     -- CLIENT SIDE
     Framework.Client = {}
-    
+
     ---Detect and initialize client framework bridge.
     ---@return nil
     local function detectFramework()
@@ -208,7 +206,7 @@ else
             Framework.Type = 'esx'
             Framework.ESX = esxObject
         end
-        
+
         if Framework.Type ~= 'esx' and isResourceStarted('qb-core') then
             local qbObject = getQbCoreObject()
             if qbObject then
@@ -216,7 +214,7 @@ else
                 Framework.QB = qbObject
             end
         end
-        
+
         if not Framework.Type then
             Framework.Type = 'standalone'
             debugprint('No framework detected, running in standalone mode')
@@ -224,9 +222,9 @@ else
             debugprint('Detected framework: ' .. Framework.Type)
         end
     end
-    
+
     detectFramework()
-    
+
     ---Client-side notification helper.
     ---@param title string
     ---@param message string
