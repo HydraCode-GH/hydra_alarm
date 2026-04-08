@@ -58,3 +58,5 @@ Client exports are defined in [client/client.lua](client/client.lua):
 3. `hasAlarm(vehicle)`
 4. `getActiveAlarms()`
 
+#Preview 
+![Preview](preview.mp4)
