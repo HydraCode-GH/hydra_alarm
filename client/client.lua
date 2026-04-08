@@ -318,10 +318,12 @@ function startVehicleHorn(vehicle, plate)
             elseif Config.HornPattern == 'pulse' then
                 SoundVehicleHornThisFrame(vehicle)
                 Wait(500)
+                if not vehicleData.alarmActive then break end
                 Wait(200)
             elseif Config.HornPattern == 'double' then
                 SoundVehicleHornThisFrame(vehicle)
                 Wait(300)
+                if not vehicleData.alarmActive then break end
                 SoundVehicleHornThisFrame(vehicle)
                 Wait(800)
             end
