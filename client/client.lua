@@ -88,6 +88,26 @@ end
 local blacklistedVehicleLookup = buildModelLookup(Config.BlacklistedVehicles)
 local towTruckLookup = buildModelLookup(Config.TowTrucks)
 
+---@type table<number, boolean>
+local allowedClassLookup = (function()
+    local lookup = {}
+    if type(Config.AllowedVehicleClasses) == 'table' then
+        for _, class in ipairs(Config.AllowedVehicleClasses) do
+            lookup[class] = true
+        end
+    end
+    return lookup
+end)()
+
+---@param vehicle number
+---@return boolean
+local function isAllowedVehicleClass(vehicle)
+    if not next(allowedClassLookup) then
+        return true
+    end
+    return allowedClassLookup[GetVehicleClass(vehicle)] == true
+end
+
 ---@param value number|nil
 ---@return number
 local function clampVolume(value)
@@ -500,7 +520,7 @@ CreateThread(function()
 
         for _, vehicleEntry in ipairs(nearbyVehicles) do
             local vehicle = vehicleEntry.vehicle
-            if not isBlacklistedVehicle(vehicle) then
+            if isAllowedVehicleClass(vehicle) and not isBlacklistedVehicle(vehicle) then
                 local plate = normalizePlate(GetVehicleNumberPlateText(vehicle))
                 if plate == '' then
                     goto continue_nearby_vehicle
