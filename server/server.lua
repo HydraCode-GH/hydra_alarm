@@ -98,7 +98,9 @@ RegisterNetEvent('hydra_alarm:serverSetAlarmState', function(plate, alarmActive,
 
     if alarmActive then
         debugprint('Alarm sync start from ' .. GetPlayerName(sourceId) .. ' | Plate: ' .. normalizedPlate .. ' | Reason: ' .. tostring(reason))
-        notifySource(sourceId, L('notify.alarm_triggered', normalizedPlate), 'warning', 3500)
+        if Config.NotifyOnAlarm then
+            notifySource(sourceId, L('notify.alarm_triggered'), 'warning', 3500)
+        end
 
         if Config.OwnerNotification and Editable and Editable.Server and Editable.Server.OwnerNotify then
             Editable.Server.OwnerNotify(normalizedPlate, reason)
@@ -109,7 +111,9 @@ RegisterNetEvent('hydra_alarm:serverSetAlarmState', function(plate, alarmActive,
         end
     else
         debugprint('Alarm sync stop from ' .. GetPlayerName(sourceId) .. ' | Plate: ' .. normalizedPlate)
-        notifySource(sourceId, L('notify.alarm_stopped', normalizedPlate), 'success', 2500)
+        if Config.NotifyOnAlarm then
+            notifySource(sourceId, L('notify.alarm_stopped'), 'success', 2500)
+        end
     end
 end)
 
@@ -124,7 +128,9 @@ RegisterNetEvent('hydra_alarm:triggerAlarm', function(plate, reason)
 
     setAlarmState(normalizedPlate, true, reason or 'legacy_trigger', sourceId)
     debugprint('Alarm triggered by ' .. GetPlayerName(sourceId) .. ' for vehicle: ' .. normalizedPlate .. ' | Reason: ' .. tostring(reason))
-    notifySource(sourceId, L('notify.alarm_triggered', normalizedPlate), 'warning', 3500)
+    if Config.NotifyOnAlarm then
+        notifySource(sourceId, L('notify.alarm_triggered'), 'warning', 3500)
+    end
 end)
 
 ---@param plate string
@@ -137,7 +143,9 @@ RegisterNetEvent('hydra_alarm:stopAlarm', function(plate)
 
     setAlarmState(normalizedPlate, false, 'legacy_stop', sourceId)
     debugprint('Alarm stopped by ' .. GetPlayerName(sourceId) .. ' for vehicle: ' .. normalizedPlate)
-    notifySource(sourceId, L('notify.alarm_stopped', normalizedPlate), 'success', 2500)
+    if Config.NotifyOnAlarm then
+        notifySource(sourceId, L('notify.alarm_stopped'), 'success', 2500)
+    end
 end)
 
 debugprint('Server initialized')

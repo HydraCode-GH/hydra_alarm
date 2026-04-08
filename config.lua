@@ -184,6 +184,11 @@ Config.MinimumDamageThreshold = 5
 -- =========================================================
 -- Notifications
 -- =========================================================
+-- Notify nearby players when an alarm starts or stops.
+-- This uses the same notification system as everything else.
+-- Default: false
+Config.NotifyOnAlarm = false
+
 -- Notify the vehicle owner when their alarm triggers.
 -- The owner must be online in the session.
 -- Extend Editable.Server.OwnerNotify for database-based ownership lookup.

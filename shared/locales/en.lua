@@ -13,14 +13,13 @@
 --]]
 
 RegisterHydraLocale('en', {
-    ['notify.alarm_triggered'] = 'Alarm triggered: %s',
-    ['notify.alarm_stopped'] = 'Alarm stopped: %s',
-    ['notify.no_permission'] = 'You are not allowed to run this command.',
-    ['notify.stop_all_success'] = 'Stopped all alarms for all players.',
+    ['notify.alarm_triggered'] = 'A vehicle alarm triggered nearby.',
+    ['notify.alarm_stopped']   = 'A nearby vehicle alarm stopped.',
+    ['notify.no_permission']   = 'You are not allowed to run this command.',
 
     ['command.stopall.success'] = 'All alarms stopped.',
-    ['command.stopall.denied'] = 'Not allowed to use this command.',
+    ['command.stopall.denied']  = 'Not allowed to use this command.',
 
-    ['notify.owner_alarm'] = 'Your vehicle (%s) triggered an alarm! Reason: %s',
+    ['notify.owner_alarm']      = 'Your vehicle (%s) triggered an alarm! Reason: %s',
     ['notify.dispatch_message'] = 'Vehicle alarm triggered. Plate: %s | Reason: %s',
 })
