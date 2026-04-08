@@ -27,7 +27,7 @@ It runs with ESX, QBCore, or standalone mode and it keeps alarm state synced thr
 
 ## Quick setup
 
-1. [Get the newest release here](https://github.com/HydraCode-GH/hydra_alarm/releases/latest/download/hydra_alarm.zip)
+1. [Get the newest release here](https://github.com/HydraCode-GH/hydra_alarm/)
 1. Put the resource in your server resources folder.
 2. Configure the [config.lua](config.lua).
 3. Add this in server.cfg and restart the server:
@@ -58,5 +58,5 @@ Client exports are defined in [client/client.lua](client/client.lua):
 3. `hasAlarm(vehicle)`
 4. `getActiveAlarms()`
 
-#Preview 
-![Preview](./preview.mp4)
+## Preview
+[Watch preview video](./preview.mp4)
