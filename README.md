@@ -59,4 +59,5 @@ Client exports are defined in [client/client.lua](client/client.lua):
 4. `getActiveAlarms()`
 
 ## Preview
-[Watch preview video](./preview.mp4)
+https://github.com/user-attachments/assets/27a4f3d4-a07a-4364-9ab6-fbb01af1d53d
+
