@@ -59,4 +59,4 @@ Client exports are defined in [client/client.lua](client/client.lua):
 4. `getActiveAlarms()`
 
 #Preview 
-![Preview](preview.mp4)
+![Preview](./preview.mp4)
