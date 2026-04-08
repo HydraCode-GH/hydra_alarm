@@ -472,6 +472,36 @@ AddEventHandler('vehicle:alarmStop', function(_, plate)
     })
 end)
 
+-- Detect vehicle damage via game events rather than health polling.
+-- This fires on every hit regardless of current health level, so wrecked
+-- vehicles with 0 health still trigger the alarm when struck.
+AddEventHandler('gameEventTriggered', function(name, args)
+    if name ~= 'CEventNetworkEntityDamage' then
+        return
+    end
+
+    local entity = args[1]
+    if GetEntityType(entity) ~= 2 then
+        return
+    end
+
+    local plate = normalizePlate(GetVehicleNumberPlateText(entity))
+    local vehicleData = cachedVehicles[plate]
+    if not vehicleData or vehicleData.alarmActive then
+        return
+    end
+
+    if not (GetVehicleDoorLockStatus(entity) > 1) then
+        return
+    end
+
+    if (GetGameTimer() - vehicleData.lastAlarmTime) < (Config.AlarmCooldown * 1000) then
+        return
+    end
+
+    startVehicleAlarm(entity, plate, 'damage')
+end)
+
 RegisterNetEvent('hydra_alarm:syncAlarmState', function(plate, alarmActive, reason)
     plate = normalizePlate(plate)
     if plate == '' then
@@ -673,11 +703,6 @@ CreateThread(function()
                     end
 
                     local currentHealth = GetEntityHealth(vehicleData.handle)
-                    local healthLoss = vehicleData.health - currentHealth
-                    if healthLoss > Config.MinimumDamageThreshold and not vehicleData.alarmActive then
-                        startVehicleAlarm(vehicleData.handle, plate, 'damage')
-                    end
-
                     vehicleData.health = currentHealth
 
                     if Config.TowTruckAlarm and vehicleData.isBeingTowed and not vehicleData.alarmActive then
