@@ -198,6 +198,13 @@ Config.OwnerNotification = true
 -- Configure the actual dispatch call in Editable.Server.Dispatch (shared/editable.lua).
 Config.DispatchEnabled = false
 
+-- Jobs that receive the dispatch notification when an alarm fires.
+-- Only used by the built-in job-based dispatch in Editable.Server.Dispatch.
+Config.DispatchJobs = {
+    'police',
+    'sheriff',
+}
+
 -- =========================================================
 -- Commands
 -- =========================================================
