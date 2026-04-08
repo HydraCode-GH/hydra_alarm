@@ -34,14 +34,15 @@ end
 ---@param plate string
 ---@param alarmActive boolean
 ---@param reason string
+---@param coords? vector3
 ---@return nil
-local function requestServerAlarmState(plate, alarmActive, reason)
+local function requestServerAlarmState(plate, alarmActive, reason, coords)
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then
         return
     end
 
-    TriggerServerEvent('hydra_alarm:serverSetAlarmState', normalizedPlate, alarmActive == true, reason)
+    TriggerServerEvent('hydra_alarm:serverSetAlarmState', normalizedPlate, alarmActive == true, reason, coords)
 end
 
 ---@class AlarmVehicleData
@@ -301,7 +302,7 @@ function startVehicleAlarm(vehicle, plate, reason, fromServer)
     playAlarmSound(vehicle, plate)
 
     if not fromServer then
-        requestServerAlarmState(plate, true, reason)
+        requestServerAlarmState(plate, true, reason, GetEntityCoords(vehicle))
     end
 end
 

@@ -182,6 +182,18 @@ Config.JumpHeightThreshold = 1.0
 Config.MinimumDamageThreshold = 5
 
 -- =========================================================
+-- Notifications
+-- =========================================================
+-- Notify the vehicle owner when their alarm triggers.
+-- The owner must be online in the session.
+-- Extend Editable.Server.OwnerNotify for database-based ownership lookup.
+Config.OwnerNotification = true
+
+-- Send a dispatch alert to configured jobs when an alarm triggers.
+-- Configure the actual dispatch call in Editable.Server.Dispatch (shared/editable.lua).
+Config.DispatchEnabled = false
+
+-- =========================================================
 -- Commands
 -- =========================================================
 -- Admin command to stop every active alarm in scope.

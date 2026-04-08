@@ -29,8 +29,9 @@ end
 ---@param alarmActive boolean
 ---@param reason string|nil
 ---@param sourceId number
+---@param coords? vector3
 ---@return nil
-local function setAlarmState(plate, alarmActive, reason, sourceId)
+local function setAlarmState(plate, alarmActive, reason, sourceId, coords)
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then
         return
@@ -41,6 +42,9 @@ local function setAlarmState(plate, alarmActive, reason, sourceId)
     state.reason = reason or state.reason or 'unknown'
     state.updatedAt = os.time()
     state.updatedBy = sourceId
+    if coords then
+        state.coords = coords
+    end
     serverVehicleCache[normalizedPlate] = state
 
     TriggerClientEvent('hydra_alarm:syncAlarmState', -1, normalizedPlate, state.alarmActive, state.reason)
@@ -82,18 +86,27 @@ end)
 ---@param plate string
 ---@param alarmActive boolean
 ---@param reason string
-RegisterNetEvent('hydra_alarm:serverSetAlarmState', function(plate, alarmActive, reason)
+---@param coords? vector3
+RegisterNetEvent('hydra_alarm:serverSetAlarmState', function(plate, alarmActive, reason, coords)
     local sourceId = source
     local normalizedPlate = normalizePlate(plate)
     if normalizedPlate == '' then
         return
     end
 
-    setAlarmState(normalizedPlate, alarmActive, reason, sourceId)
+    setAlarmState(normalizedPlate, alarmActive, reason, sourceId, coords)
 
     if alarmActive then
         debugprint('Alarm sync start from ' .. GetPlayerName(sourceId) .. ' | Plate: ' .. normalizedPlate .. ' | Reason: ' .. tostring(reason))
         notifySource(sourceId, L('notify.alarm_triggered', normalizedPlate), 'warning', 3500)
+
+        if Config.OwnerNotification and Editable and Editable.Server and Editable.Server.OwnerNotify then
+            Editable.Server.OwnerNotify(normalizedPlate, reason)
+        end
+
+        if Config.DispatchEnabled and Editable and Editable.Server and Editable.Server.Dispatch then
+            Editable.Server.Dispatch(coords, normalizedPlate, reason)
+        end
     else
         debugprint('Alarm sync stop from ' .. GetPlayerName(sourceId) .. ' | Plate: ' .. normalizedPlate)
         notifySource(sourceId, L('notify.alarm_stopped', normalizedPlate), 'success', 2500)

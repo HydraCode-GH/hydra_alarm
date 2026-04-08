@@ -20,4 +20,7 @@ RegisterHydraLocale('en', {
 
     ['command.stopall.success'] = 'All alarms stopped.',
     ['command.stopall.denied'] = 'Not allowed to use this command.',
+
+    ['notify.owner_alarm'] = 'Your vehicle (%s) triggered an alarm! Reason: %s',
+    ['notify.dispatch_message'] = 'Vehicle alarm triggered. Plate: %s | Reason: %s',
 })
